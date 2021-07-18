@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace csharp
 {
@@ -14,7 +14,7 @@ namespace csharp
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(2));
         }
-        
+
         [Test]
         public void BaseItem_WhenNotExpired_DecreasesByOne()
         {
@@ -23,7 +23,7 @@ namespace csharp
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(3));
         }
-        
+
         [Test]
         public void BaseItem_ZeroQuality_DoesNotGoNegative()
         {
@@ -41,7 +41,7 @@ namespace csharp
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(1));
         }
-        
+
         [Test]
         public void AgedBrie_WhenExpired_IncreasesInQualityByTwo()
         {
@@ -50,7 +50,7 @@ namespace csharp
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(2));
         }
-        
+
         [Test]
         public void AgedBrie_DoesNotGoAbove50()
         {
@@ -59,31 +59,30 @@ namespace csharp
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(50));
         }
-        
+
         [Test]
         public void Sulfuras_Expired_QualityDoesntChange()
         {
-            
             var items = new List<Item> {new Item {Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80}};
             var app = new GildedRose(items);
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(80));
         }
-        
+
         [Test]
         public void Sulfuras_NotExpired_QualityDoesntChange()
         {
-            
             var items = new List<Item> {new Item {Name = "Sulfuras, Hand of Ragnaros", SellIn = 2, Quality = 80}};
             var app = new GildedRose(items);
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(80));
         }
-        
+
         [Test]
         public void BackStagePass_ExpiresIn5Days_IncreaseInQualityByThree()
         {
-            var items = new List<Item> {new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 5, Quality = 40}};
+            var items = new List<Item>
+                {new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 5, Quality = 40}};
             var app = new GildedRose(items);
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(43));
@@ -92,16 +91,18 @@ namespace csharp
         [Test]
         public void BackStagePass_ExpiresIn10Days_IncreaseInQualityByTwo()
         {
-            var items = new List<Item> {new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 10, Quality = 40}};
+            var items = new List<Item>
+                {new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 10, Quality = 40}};
             var app = new GildedRose(items);
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(42));
         }
-        
+
         [Test]
         public void BackStagePass_ExpiresIn20Days_IncreaseInQualityByOne()
         {
-            var items = new List<Item> {new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 20, Quality = 40}};
+            var items = new List<Item>
+                {new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 20, Quality = 40}};
             var app = new GildedRose(items);
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(41));
@@ -110,13 +111,13 @@ namespace csharp
         [Test]
         public void BackStagePass_Expired_QualityIsZero()
         {
-            
-            var items = new List<Item> {new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 0, Quality = 40}};
+            var items = new List<Item>
+                {new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 0, Quality = 40}};
             var app = new GildedRose(items);
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(0));
         }
-        
+
         [Test]
         public void ConjuredManaCake_NotExpired_QualityDecreasesByTwo()
         {
@@ -125,7 +126,7 @@ namespace csharp
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(4));
         }
-        
+
         [Test]
         public void ConjuredManaCake_NotExpiredQuality1_QualityIsZero()
         {
@@ -134,7 +135,7 @@ namespace csharp
             app.UpdateQuality();
             Assert.That(items[0].Quality, Is.EqualTo(0));
         }
-        
+
         [Test]
         public void ConjuredManaCake_Expired_QualityDecreasesByFour()
         {
