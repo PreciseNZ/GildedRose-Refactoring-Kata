@@ -10,10 +10,9 @@ namespace csharp
         private const string Conjured = "Conjured Mana Cake";
         private const int MaxQuality = 50;
         private const int MinQuality = 0;
-
+        private int _qualityAdjustmentAmount = -1;
 
         private readonly IList<Item> _items;
-        private int _qualityRate = 1;
 
         public GildedRose(IList<Item> items)
         {
@@ -30,46 +29,33 @@ namespace csharp
                 item.SellIn -= 1;
 
                 if (item.Name == Conjured)
-                    _qualityRate = 2;
-                
+                    _qualityAdjustmentAmount = -2;
+
+                if (item.Name == AgedBrie)
+                    _qualityAdjustmentAmount = 1;
+
                 if (item.Name == BackStagePasses)
                 {
-                    IncreaseQuality(item);
-                    if (item.SellIn < 10) IncreaseQuality(item);
-                    if (item.SellIn < 5) IncreaseQuality(item);
+                    _qualityAdjustmentAmount = 1;
+                    AdjustQuality(item);
+                    if (item.SellIn < 10) AdjustQuality(item);
+                    if (item.SellIn < 5) AdjustQuality(item);
                     if (item.SellIn < 0) item.Quality = 0;
                     continue;
                 }
 
-                if (item.Name != AgedBrie)
-                {
-                    DecreaseQuality(item);
-                }
-                else
-                {
-                    IncreaseQuality(item);
-                }
+                AdjustQuality(item);
 
-                if (item.Quality <= 0)
-                    item.Quality = 0;
-
-                if (item.SellIn >= 0) continue;
-
-                if (item.Name != AgedBrie)
-                    DecreaseQuality(item);
-                else
-                    IncreaseQuality(item);
+                if (item.SellIn < 0)
+                    AdjustQuality(item);
             }
         }
 
-        private void IncreaseQuality(Item item)
+        private void AdjustQuality(Item item)
         {
-            if (item.Quality < MaxQuality) item.Quality += _qualityRate;
-        }
-
-        private void DecreaseQuality(Item item)
-        {
-            if (item.Quality > MinQuality) item.Quality -= _qualityRate;
+            item.Quality += _qualityAdjustmentAmount;
+            if (item.Quality <= MinQuality) item.Quality = MinQuality;
+            if (item.Quality >= MaxQuality) item.Quality = MaxQuality;
         }
     }
 }
