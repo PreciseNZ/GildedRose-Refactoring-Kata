@@ -117,14 +117,31 @@ namespace csharp
             Assert.That(items[0].Quality, Is.EqualTo(0));
         }
         
-        // [Test]
-        // public void ConjuredManaCake_NotExpired_QualityDecreasesByTwo()
-        // {
-        //     
-        //     var items = new List<Item> {new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}};
-        //     var app = new GildedRose(items);
-        //     app.UpdateQuality();
-        //     Assert.That(items[0].Quality, Is.EqualTo(4));
-        // }
+        [Test]
+        public void ConjuredManaCake_NotExpired_QualityDecreasesByTwo()
+        {
+            var items = new List<Item> {new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}};
+            var app = new GildedRose(items);
+            app.UpdateQuality();
+            Assert.That(items[0].Quality, Is.EqualTo(4));
+        }
+        
+        [Test]
+        public void ConjuredManaCake_NotExpiredQuality1_QualityIsZero()
+        {
+            var items = new List<Item> {new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 1}};
+            var app = new GildedRose(items);
+            app.UpdateQuality();
+            Assert.That(items[0].Quality, Is.EqualTo(0));
+        }
+        
+        [Test]
+        public void ConjuredManaCake_Expired_QualityDecreasesByFour()
+        {
+            var items = new List<Item> {new Item {Name = "Conjured Mana Cake", SellIn = 0, Quality = 6}};
+            var app = new GildedRose(items);
+            app.UpdateQuality();
+            Assert.That(items[0].Quality, Is.EqualTo(2));
+        }
     }
 }
