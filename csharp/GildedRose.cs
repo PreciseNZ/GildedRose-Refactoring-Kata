@@ -10,7 +10,7 @@ namespace csharp
         private const string Conjured = "Conjured Mana Cake";
         private const int MaxQuality = 50;
         private const int MinQuality = 0;
-        private int QualityRate = 1;
+        private int _qualityRate = 1;
         
 
         private readonly IList<Item> _items;
@@ -29,40 +29,28 @@ namespace csharp
                 item.SellIn -= 1;
 
                 if (item.Name == Conjured)
-                    QualityRate = 2;
+                    _qualityRate = 2;
                 
                 if (item.Name != AgedBrie && item.Name != BackStagePasses)
                 {
-                    if (item.Quality > MinQuality)
-                    {
-                        item.Quality -= QualityRate;
-                    }
+                    DecreaseQuality(item);
                 }
                 else
                 {
-                    if (item.Quality < MaxQuality)
-                    {
-                        item.Quality += QualityRate;
+                    IncreaseQuality(item);
 
                         if (item.Name == BackStagePasses)
                         {
                             if (item.SellIn < 10)
                             {
-                                if (item.Quality < MaxQuality)
-                                {
-                                    item.Quality += QualityRate;
-                                }
+                                IncreaseQuality(item);
                             }
 
                             if (item.SellIn < 5)
                             {
-                                if (item.Quality < MaxQuality)
-                                {
-                                    item.Quality += QualityRate;
-                                }
+                                IncreaseQuality(item);
                             }
                         }
-                    }
                 }
 
                 if (item.Quality <= 0)
@@ -74,23 +62,33 @@ namespace csharp
                 {
                     if (item.Name != BackStagePasses)
                     {
-                        if (item.Quality > MinQuality)
-                        {
-                            item.Quality -= QualityRate;
-                        }
+                            DecreaseQuality(item);
                     }
                     else
                     {
-                        item.Quality -= item.Quality;
+                        item.Quality = 0;
                     }
                 }
                 else
                 {
-                    if (item.Quality < MaxQuality)
-                    {
-                        item.Quality += QualityRate;
-                    }
+                    IncreaseQuality(item);
                 }
+            }
+        }
+
+        private void IncreaseQuality(Item item)
+        {
+            if (item.Quality < MaxQuality)
+            {
+                item.Quality += _qualityRate;
+            }
+        }
+        
+        private void DecreaseQuality(Item item)
+        {
+            if (item.Quality > MinQuality)
+            {
+                item.Quality -= _qualityRate;
             }
         }
     }
